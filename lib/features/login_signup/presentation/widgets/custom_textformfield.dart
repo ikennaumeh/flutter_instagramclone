@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final Function validatorFunction;
-  final Function onSavedFunction;
+  final Function onChangedFunction;
   final bool obscureText;
   final TextInputType keyboardType;
 
   CustomTextFormField({
     @required this.hintText,
    this.validatorFunction,
-     this.onSavedFunction,
+     this.onChangedFunction,
     this.keyboardType,
     this.obscureText = false,
   });
@@ -42,7 +42,7 @@ class CustomTextFormField extends StatelessWidget {
           ),
 
           validator: validatorFunction,
-          onSaved: onSavedFunction,
+          onChanged: onChangedFunction,
           obscureText: obscureText,
         ),
       ),

@@ -1,11 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagramclone/core/custom_widgets/custom_buttons.dart';
-import 'package:instagramclone/core/custom_widgets/custom_textformfield.dart';
+import 'package:instagramclone/core/validation/validation.dart';
+import 'file:///C:/Users/queency/AndroidStudioProjects/instagram_clone/lib/features/login_signup/presentation/widgets/custom_buttons.dart';
+import 'file:///C:/Users/queency/AndroidStudioProjects/instagram_clone/lib/features/login_signup/presentation/widgets/custom_textformfield.dart';
 import 'package:instagramclone/features/login_signup/presentation/screens/login_screen.dart';
-import 'package:instagramclone/features/login_signup/presentation/screens/singup_screen.dart';
+import 'package:instagramclone/features/login_signup/presentation/screens/signup_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends StatefulWidget {
   static const String FORGOT_PASSWORD_SCREEN = 'forgot_password_screen';
+
+  @override
+  _ForgotPasswordState createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> with ValidationMixin {
+  String email;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,13 +87,23 @@ class ForgotPassword extends StatelessWidget {
                   padding: EdgeInsets.only(left: 20.0, right: 20.0),
                   child: CustomTextFormField(
                       hintText: 'Email, Phone, or Username',
+                      validatorFunction: (input) => validateEmail(input),
+                      onChangedFunction: (input) => email = input,
+
                   ),
                 ),
                 SizedBox(height: 10.0,),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                   child: CustomFlatButton(
-                     onPressed: (){},
+                     onPressed: () async {
+                       try{
+                         await Firebase.initializeApp();
+                         final user = await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+                       } catch(e){
+
+                       }
+                     },
                     label: 'Send Login Link',
                     textColor: Colors.white,
                     color: Colors.lightBlueAccent,

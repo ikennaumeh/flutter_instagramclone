@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:instagramclone/core/custom_widgets/custom_buttons.dart';
-import 'package:instagramclone/core/custom_widgets/custom_textformfield.dart';
+import 'package:instagramclone/core/validation/validation.dart';
+import 'file:///C:/Users/queency/AndroidStudioProjects/instagram_clone/lib/features/login_signup/presentation/widgets/custom_buttons.dart';
+import 'file:///C:/Users/queency/AndroidStudioProjects/instagram_clone/lib/features/login_signup/presentation/widgets/custom_textformfield.dart';
 import 'package:instagramclone/features/login_signup/presentation/screens/login_screen.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 class SignUp extends StatelessWidget {
   static const String SIGN_UP_VIEW ='sign_up_view';
 
@@ -91,7 +92,13 @@ class SignUp extends StatelessWidget {
     );
   }
 }
-class PhoneScreen extends StatelessWidget {
+class PhoneScreen extends StatefulWidget {
+  @override
+  _PhoneScreenState createState() => _PhoneScreenState();
+}
+
+class _PhoneScreenState extends State<PhoneScreen> with ValidationMixin {
+  String phone;
   @override
   Widget build(BuildContext context) {
 
@@ -108,8 +115,10 @@ class PhoneScreen extends StatelessWidget {
                 )
               ),
                child: TextFormField(
-
+                 validator: (input) => validatePhoneNumber(input),
+                 onChanged: (input) => phone = input,
                  decoration: InputDecoration(
+
                    fillColor: Colors.black.withOpacity(.7),
                    prefixIcon: Padding(
                      padding: const EdgeInsets.only(left: 10.0, top: 13.0,right: 5.0),
@@ -148,7 +157,9 @@ class PhoneScreen extends StatelessWidget {
           ),),
           SizedBox(height: 40.0,),
           CustomFlatButton(
-              onPressed: (){},
+              onPressed: (){
+
+              },
               label: 'Next',
               color: Colors.lightBlueAccent,
           textColor: Colors.white,),
@@ -160,21 +171,34 @@ class PhoneScreen extends StatelessWidget {
 
   }
 }
-class EmailScreen extends StatelessWidget {
+class EmailScreen extends StatefulWidget  {
+  @override
+  _EmailScreenState createState() => _EmailScreenState();
+}
+
+class _EmailScreenState extends State<EmailScreen> with ValidationMixin{
+  String _email;
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(padding: EdgeInsets.only(left: 15.0, right: 15.0),
           child: CustomTextFormField(
-            hintText: 'Email Address',
+            keyboardType: TextInputType.emailAddress,
+            hintText: "Email Address",
+            validatorFunction: (input) => validateEmail(input),
+            onChangedFunction: (input) => _email = input,
           ),
         ),
           SizedBox(height: 40.0,),
         Padding(
           padding: const EdgeInsets.only(left: 14, right: 14.0),
           child: CustomFlatButton(
-            onPressed: (){},
+            onPressed: (){
+
+            },
             label: 'Next',
             color: Colors.lightBlueAccent,
             textColor: Colors.white,),
